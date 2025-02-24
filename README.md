@@ -1,2 +1,2 @@
 # WeatherPie
-Weather TUI app written in Py(Pie)thon
+Weather TUI app written in Python `[Pie-thon]`
