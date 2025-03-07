@@ -1,6 +1,7 @@
 #split {
     layout: grid;
     grid-size: 1 2;
+    grid-rows: 1fr 0.95fr;
 }
 
 AddLocation {
@@ -92,8 +93,9 @@ SelectLocation {
     border: yellow;
     layout: grid;
     grid-size: 19 7;
-    grid-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gutter: 1;
     & > Label {
       border: white;
       width: 100%;

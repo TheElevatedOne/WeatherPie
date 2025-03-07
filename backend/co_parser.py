@@ -38,11 +38,14 @@ class coParser:
             hours[i] = {
                 "conditions": day["hours"][i]["conditions"],
                 "clouds": day["hours"][i]["total-clouds"],
-                "visibility": day["hours"][i]["visibility"],
+                "visibility": str(round(float(day["hours"][i]["visibility"]))),
                 "fog": day["hours"][i]["fog"],
                 "prec-prob": day["hours"][i]["prec-probability"],
                 "prec-amount": day["hours"][i]["prec-amount"],
-                "wind": {"speed": day["hours"][i]["wind"]["speed"], "direct": wind},
+                "wind": {
+                    "speed": str(round(float(day["hours"][i]["wind"]["speed"]))),
+                    "direct": wind,
+                },
                 "temperature": day["hours"][i]["temperature"],
                 "humidity": day["hours"][i]["rel-humidity"],
             }
