@@ -1,5 +1,4 @@
 # Textual imports
-from rich import color
 from textual.reactive import reactive
 from textual.app import App, ComposeResult
 from textual.containers import Container, Grid, Center
@@ -9,7 +8,6 @@ from textual.widgets import Button, Input, Label, OptionList, Static, Header, Fo
 
 # Icon imports
 from rich_pixels import Pixels  # pyright: ignore
-from backend.om_parser import omParser
 from icons.read_icon import iconParser
 
 # Other imports
@@ -18,6 +16,7 @@ from geopy.geocoders import Nominatim  # pyright: ignore
 
 # API imports
 from backend.co_parser import coParser
+from backend.om_parser import omParser
 
 
 class SelectLocation(ModalScreen):
