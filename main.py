@@ -9,6 +9,7 @@ from textual.widgets import Button, Input, Label, OptionList, Static, Header, Fo
 
 # Icon imports
 from rich_pixels import Pixels  # pyright: ignore
+from backend.om_parser import omParser
 from icons.read_icon import iconParser
 
 # Other imports
@@ -62,20 +63,87 @@ class Portrait(Screen):
             with Container(id="general"):
                 yield Label("Weather for {location}", id="g-loc")
                 with Container(id="g-ico"):
-                    yield Label(iconParser().read()[2], id="g-ico-icon")
+                    yield Label("placeholder", id="g-ico-icon")
                 yield Label("condition", id="g-cond")
-                yield Label("detials", id="g-det")
+                with Container(id="g-det"):
+                    yield Label(id="skyq")
+                    with Container(id="celeste"):
+                        yield Label(id="sun")
+                        yield Label(id="moon")
+                        yield Label(id="night")
                 with Container(id="g-ext"):
-                    yield Label("1")
-                    yield Label("2")
-                    yield Label("3")
+                    with Container(id="daily-1"):
+                        yield Label("placeholder", id="ico-1")
+                        yield Label(id="day-1")
+                    with Container(id="daily-2"):
+                        yield Label("placeholder", id="ico-2")
+                        yield Label(id="day-2")
+                    with Container(id="daily-3"):
+                        yield Label("placeholder", id="ico-3")
+                        yield Label(id="day-3")
             with Container(id="detailed"):
                 for y in range(7):
                     for x in range(19):
                         yield Label(id=f"grid-{x}-{y}")
         yield Footer()
 
-    def gen_co_data(self, wdict) -> None:
+    def gen_om_data(self, wdict: dict) -> None:
+        c_weather = wdict["current"]
+        d_weather = wdict["daily"]
+
+        cond = self.query_one("#g-cond", Label)
+        cond.update(f"""[b][u]{c_weather["weather-code"][1]}[/u][/b]
+
+Temperature: [b]{c_weather["temperature"]}°C[/b]
+Precipitation: [b]{c_weather["precipitation"]} mm[/b]
+Humidity: {c_weather["rel-humidity"]}%
+
+Wind Speed: [b]{c_weather["wind-speed"]} km/h[/b]
+Wind Gusts: {c_weather["wind-gusts"]} km/h
+Wind Direction: {c_weather["wind-dir"]}
+        """)
+
+        for key, value in d_weather.items():
+            day = self.query_one(f"#day-{int(key) + 1}", Label)
+            day.update(f"""[b][u]{value["code"][1]}[/u][/b]
+
+[u]Date:[/u] [b]{value["date"].replace("/", "[/b]/")}
+
+Temp (Max): [b]{value["temp-max"]}[/b]
+Temp (Min): [b]{value["temp-min"]}[/b]
+Prec: [b]{value["prec"]} mm[/b]""")
+
+    def gen_co_data(self, wdict: dict) -> None:
+        sun = wdict["day"]["sun"]
+        moon = wdict["day"]["moon"]
+
+        self.query_one("#sun", Label).update(f"""[#FFFF0F][b][u]Sun[/u][/b][/]
+
+Rise: {sun["rise"]}
+Set: {sun["set"]}""")
+
+        self.query_one("#moon", Label).update(f"""[#D6D6D6][b][u]Moon[/u][/b][/]
+
+Rise: {moon["rise"]}
+Set: {moon["set"]}""")
+
+        self.query_one(
+            "#night", Label
+        ).update(f"""[#98A2FF][b][u]Night Length[/u][/b][/]
+
+Civil Dark: {sun["civil-dark"][0]} - {sun["civil-dark"][1]}
+Nauti Dark: {sun["nautical-dark"][0]} - {sun["nautical-dark"][1]}
+Astro Dark: {sun["astro-dark"][0]} - {sun["astro-dark"][1]}""")
+
+        skyq = wdict["sky-quality"]
+        self.query_one("#skyq", Label).update(f"""[u]Sky Quality[/u]
+
+Bortle: [b]{skyq["bortle_class"]}[/b]
+Magnitude: {skyq["magnitude"]}
+
+Artificial  {skyq["artif-brightness"][0]}
+Brightness: {skyq["artif-brightness"][1]}""")
+
         hours = wdict["day"]["hours"]
         hours = dict(list(hours.items())[:-6])
         colors = {
@@ -199,7 +267,10 @@ class Portrait(Screen):
             x.styles.border_left = ("round", "#6F6F6F")
 
         self.co_api = coParser(lat="48.21", long="18.06", view="current")
+        self.om_api = omParser(lat="48.21", long="18.06")
+
         self.gen_co_data(self.co_api.update())
+        self.gen_om_data(self.om_api.update())
 
 
 class Landscape(Screen):
