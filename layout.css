@@ -66,8 +66,10 @@ SelectLocation {
     width: 100%;
     height: 100%;
     align: center middle;
-    & > Label {
-      align: center middle;
+    border: white;
+    & > Image {
+      width: auto;
+      height: auto;
     }
   }
   & > #g-cond {
@@ -93,6 +95,7 @@ SelectLocation {
     & > Container#celeste {
       border: #2A2C5E;
       border-top: #5C5FB6;
+      border-right: #5C5FB6;
       background: #181935;
       width: 100%;
       height: 100%;
@@ -133,6 +136,10 @@ SelectLocation {
       & > Label {
         width: 100%;
         height: 100%;
+      }
+      & > Image {
+        width: auto;
+        height: auto;
       }
       & > Label#day-1 { padding-left: 1; padding-top: 1; }
       & > Label#day-2 { padding-left: 1; padding-top: 1; }

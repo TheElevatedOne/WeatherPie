@@ -7,8 +7,8 @@ from textual.screen import Screen, ModalScreen
 from textual.widgets import Button, Input, Label, OptionList, Static, Header, Footer
 
 # Icon imports
-from rich_pixels import Pixels  # pyright: ignore
 from icons.read_icon import iconParser
+from textual_image.widget import Image
 
 # Other imports
 from shutil import get_terminal_size
@@ -56,13 +56,19 @@ class AddLocation(ModalScreen):
 class Portrait(Screen):
     CSS_PATH = "layout.css"
 
+    icon_parser = reactive(iconParser())
+    m_ico = reactive(str)
+    d1_ico = reactive(str)
+    d2_ico = reactive(str)
+    d3_ico = reactive(str)
+
     def compose(self) -> ComposeResult:
         yield Header()
         with Container(id="split"):
             with Container(id="general"):
                 yield Label("Weather for {location}", id="g-loc")
                 with Container(id="g-ico"):
-                    yield Label("placeholder", id="g-ico-icon")
+                    yield Image(id="g-ico-icon")
                 yield Label("condition", id="g-cond")
                 with Container(id="g-det"):
                     yield Label(id="skyq")
@@ -72,13 +78,13 @@ class Portrait(Screen):
                         yield Label(id="night")
                 with Container(id="g-ext"):
                     with Container(id="daily-1"):
-                        yield Label("placeholder", id="ico-1")
+                        yield Image(id="ico-1")
                         yield Label(id="day-1")
                     with Container(id="daily-2"):
-                        yield Label("placeholder", id="ico-2")
+                        yield Image(id="ico-2")
                         yield Label(id="day-2")
                     with Container(id="daily-3"):
-                        yield Label("placeholder", id="ico-3")
+                        yield Image(id="ico-3")
                         yield Label(id="day-3")
             with Container(id="detailed"):
                 for y in range(7):
@@ -89,6 +95,12 @@ class Portrait(Screen):
     def gen_om_data(self, wdict: dict) -> None:
         c_weather = wdict["current"]
         d_weather = wdict["daily"]
+
+        m_img = self.query_one("#g-ico-icon", Image)
+        m_ico = self.icon_parser.load_icon(
+            c_weather["weather-code"][0], c_weather["is-day"]
+        )
+        m_img.image = m_ico
 
         cond = self.query_one("#g-cond", Label)
         cond.update(f"""[b][u]{c_weather["weather-code"][1]}[/u][/b]
@@ -103,6 +115,10 @@ Wind Direction: {c_weather["wind-dir"]}
         """)
 
         for key, value in d_weather.items():
+            d_img = self.query_one(f"#ico-{int(key) + 1}", Image)
+            d_ico = self.icon_parser.load_icon(value["code"][0], True)
+            d_img.image = d_ico
+
             day = self.query_one(f"#day-{int(key) + 1}", Label)
             day.update(f"""[b][u]{value["code"][1]}[/u][/b]
 

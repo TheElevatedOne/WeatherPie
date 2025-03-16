@@ -1,26 +1,21 @@
 import os
+import os.path as op
 import shutil
-from PIL import Image
-from rich_pixels import Pixels
+from textual_image.widget import Image
 
 
 class iconParser:
     def __init__(self) -> None:
-        self.cdir = os.path.abspath(os.path.dirname(__file__))
-        self.im_dir = [x for x in os.listdir(self.cdir) if ".png" in x]
+        self.cwd = op.abspath(op.dirname(__file__))
+        self.im_dir = [
+            x for x in os.listdir(op.join(self.cwd, "scaled")) if ".png" in x
+        ]
         self.im_dir.sort()
-        pass
 
-    def read(self) -> list:
-        term_size = shutil.get_terminal_size()
-        icon_size = round(term_size[0] / 4) - 2
+    def load_icon(self, cond: int, is_day: bool) -> str:
+        if cond <= 2:
+            icon = [x for x in self.im_dir if f"{cond}_{int(is_day)}" in x][0]
+        else:
+            icon = [x for x in self.im_dir if f"{cond}" in x][0]
 
-        results = []
-        for img in self.im_dir:
-            pimg = Image.open(os.path.join(self.cdir, img))
-            pimg = pimg.resize((icon_size, icon_size), Image.Resampling.NEAREST)
-
-            px = Pixels.from_image(pimg)
-            results.append(px)
-
-        return results
+        return op.join(self.cwd, "scaled", icon)
