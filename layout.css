@@ -58,25 +58,30 @@ SelectLocation {
     height: 100%;
   }
   & > #g-loc {
-    border: white;
+    border: round white;
+    background: #231B3C;
     column-span: 3;
+    padding-left: 1;
   }
   & > #g-ico {
     column-span: 1;
     width: 100%;
     height: 100%;
     align: center middle;
-    border: white;
+    background: #181835;
+    border: #2A2C5E;
+    border-top: #5C5FB6;
+    border-left: #5C5FB6;    
     & > Image {
       width: auto;
       height: auto;
     }
   }
   & > #g-cond {
-    border: #3F3F3F;
-    border-top: #7D7D7D;
-    background: #252A3A;
     column-span: 1;
+    border: #2E3C6B;
+    border-top: #6478BD;
+    background: #202A4B;
     padding: 2;
   }
   & > #g-det {
@@ -136,14 +141,13 @@ SelectLocation {
       & > Label {
         width: 100%;
         height: 100%;
+        padding-left: 1;
+        padding-top: 1;
       }
       & > Image {
         width: auto;
         height: auto;
       }
-      & > Label#day-1 { padding-left: 1; padding-top: 1; }
-      & > Label#day-2 { padding-left: 1; padding-top: 1; }
-      & > Label#day-3 { padding-left: 1; padding-top: 1; }    
     }
     & > Container#daily-1 {
       background: #415D2A;
@@ -166,11 +170,11 @@ SelectLocation {
 }
 
 #detailed {
-  border: #A4A4A4;
+  border: round #A4A4A4;
   background: #191919;
   layout: grid;
   grid-size: 19 7;
-  grid-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-gutter: 1;
   & > Label {

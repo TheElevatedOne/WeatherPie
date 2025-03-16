@@ -2,9 +2,8 @@
 from textual.reactive import reactive
 from textual.app import App, ComposeResult
 from textual.containers import Container, Grid, Center
-from textual.widget import Widget
 from textual.screen import Screen, ModalScreen
-from textual.widgets import Button, Input, Label, OptionList, Static, Header, Footer
+from textual.widgets import Input, Label, OptionList, Header, Footer
 
 # Icon imports
 from icons.read_icon import iconParser
